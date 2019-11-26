@@ -1,0 +1,215 @@
+
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+#spring.datasource.url=jdbc:mysql://localhost:3306/test?characterEncoding=utf8&useUnicode=true&sessionVariables=storage_engine%3DInnoDB&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+spring.datasource.url=jdbc:mysql://localhost:3306/test?serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=123456
+spring.datasource.type=com.alibaba.druid.pool.xa.DruidXADataSource
+mybatis.type-aliases-package=com.limao.pojo
+
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
+
+
+# --------------------数据源配置----------------------
+# sqlite
+#jdbc.type=sqlite
+#jdbc.driver=org.sqlite.JDBC
+#jdbc.url=jdbc:sqlite:d:/website_java3.s3db
+#jdbc.username=
+#jdbc.password=
+
+# Mysql
+#jdbc.type=mysql
+#jdbc.driver=com.mysql.jdbc.Driver
+#jdbc.url=jdbc:mysql://localhost:3306/website_java3?characterEncoding=utf8&useSSL=true
+#jdbc.username=root
+#jdbc.password=root
+
+# Oracle
+#jdbc.type=oracle
+#jdbc.driver=oracle.jdbc.driver.OracleDriver
+#jdbc.url=jdbc:oracle:thin:@192.168.1.10:1521:orcl
+#jdbc.username=website_java3
+#jdbc.password=website_java3
+
+#druid datasource
+#druid.initialSize=10
+#druid.minIdle=10
+#druid.maxActive=50
+#druid.maxWait=60000
+#druid.timeBetweenEvictionRunsMillis=30000
+#druid.minEvictableIdleTimeMillis=150000
+#druid.validationQuery=SELECT 'x'
+#druid.validationQueryTimeout=3600
+#druid.testWhileIdle=true
+#druid.testOnBorrow=false
+#druid.testOnReturn=false
+#druid.removeAbandoned=true
+#druid.removeAbandonedTimeout=1800000
+#druid.logAbandoned=true
+#druid.poolPreparedStatements=true
+#druid.maxPoolPreparedStatementPerConnectionSize=20
+#druid.filters=wall,stat
+
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration  PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"  "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+<configuration>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    							mybatis 扩展配置
+   	  	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  	<!-- 全局参数 -->
+	<settings>
+		<!-- 使全局的映射器启用或禁用缓存。 -->
+		<setting name="cacheEnabled" value="true"/>
+		<!-- 全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载。 -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<!-- 当启用时，有延迟加载属性的对象在被调用时将会完全加载任意属性。否则，每种属性将会按需要加载。 -->
+		<setting name="aggressiveLazyLoading" value="true"/>
+		<!-- 是否允许单条sql 返回多个数据集  (取决于驱动的兼容性) default:true -->
+		<setting name="multipleResultSetsEnabled" value="true"/>
+		<!-- 是否可以使用列的别名 (取决于驱动的兼容性) default:true -->
+		<setting name="useColumnLabel" value="true"/>
+		<!-- 允许JDBC 生成主键。需要驱动器支持。如果设为了true，这个设置将强制使用被生成的主键，有一些驱动器不兼容不过仍然可以执行。  default:false  -->
+		<setting name="useGeneratedKeys" value="false"/>
+		<!-- 指定 MyBatis 如何自动映射 数据基表的列 NONE：不隐射　PARTIAL:部分  FULL:全部  -->
+		<setting name="autoMappingBehavior" value="PARTIAL"/>
+		<!-- 这是默认的执行类型  （SIMPLE: 简单； REUSE: 执行器可能重复使用prepared statements语句；BATCH: 执行器可以重复执行语句和批量更新）  -->
+		<setting name="defaultExecutorType" value="SIMPLE"/>
+		<!-- 使用驼峰命名法转换字段。 -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<!-- 设置本地缓存范围 session:就会有数据的共享  statement:语句范围 (这样就不会有数据的共享 ) defalut:session -->
+        <setting name="localCacheScope" value="SESSION"/>
+        <!-- 设置但JDBC类型为空时,某些驱动程序 要指定值,default:OTHER，插入空值时不需要指定类型 -->
+        <setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+
+</configuration>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
+
+	<!-- 数据源：加载数据库配置文件 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:source.properties</value>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+	<!-- 数据源：配置参数 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    	<!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+	    <property name="driverClassName" value="${jdbc.driver}" />
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="dbType" value = "mysql" />
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="${druid.initialSize}"/><!-- 初始化连接数量 -->
+        <property name="minIdle" value="${druid.minIdle}"/><!-- 最小空闲连接数量 -->
+        <property name="maxActive" value="${druid.maxActive}"/><!-- 最大连接数量 -->
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${druid.maxWait}"/><!-- 最大建立连接等待时间(毫秒)。如果超过此时间将接到异常。设为－1表示无限制-->
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+
+        <property name="validationQuery" value="${druid.validationQuery}" />
+        <property name="validationQueryTimeout" value="${druid.validationQueryTimeout}" />
+        <property name="testWhileIdle" value="${druid.testWhileIdle}" /><!--空闲时是否进行验证，检查对象是否有效 -->
+        <property name="testOnBorrow" value="${druid.testOnBorrow}" /><!--取得对象时是否进行验证，检查对象是否有效 -->
+        <property name="testOnReturn" value="${druid.testOnReturn}" /><!--返回对象时是否进行验证 -->
+        <property name="removeAbandoned" value="${druid.removeAbandoned}" />
+        <property name="removeAbandonedTimeout" value="${druid.removeAbandonedTimeout}" />
+        <property name="logAbandoned" value="${druid.logAbandoned}" />
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 oracle=true mysql=false -->
+        <property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" /><!-- 表明是否开启statement cache，默认为false，也就是不开启 -->
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}" /><!-- statement cache的大小，默认为-1，也就是不限制 -->
+
+   		<!-- 配置监控统计拦截的filters -->
+	    <property name="filters" value="${druid.filters}" /><!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计   -->
+    </bean>
+
+	<!-- session 工厂 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 用于连接数据库的数据源 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 指定Mybatis的配置文件位置 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<!-- 注册类（bean）的别名，该属性可以配置多个，可以用,;\t\n进行分割，不支持ant通配符 -->
+		<property name="typeAliasesPackage" value="com.whowii.core.manage.model"/>
+		<!-- 配置映射文件，该路径支持多个，可以用,;\t\n进行分割，支持ant通配符 -->
+		<property name="mapperLocations">
+			<array>
+				<value>classpath:com/whowii/core/manage/mapper/sysuser-mapper.xml</value>
+			</array>
+		</property>
+	</bean>
+
+	<!--++++++++++++++++++++++++++++++++ 事务配置 +++++++++++++++++++++++++++++++-->
+    <!-- 事务：声明管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- 数据层配置，自动扫描，由 MapperScannerConfigurer自动生成 mapper bean -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.whowii.core.manage.dao" />
+	</bean>
+
+	<!-- 自动扫描业务包 -->
+    <context:component-scan base-package="com.whowii.core.manage.service.impl" />
+
+
+</beans>
+
+
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.whowii.core.manage.dao.SysUserDao">
+
+	<!-- 定义的resultMap，以解决类的属性名和数据库列名不一致的问题
+		其中的type是mybatis配置文件中定义的别名
+	-->
+	<resultMap id="result" type="SysUser">
+		<id column="USER_CODE" property="userCode" />
+		<result column="LOGIN_NAME" property="loginName" />
+		<result column="LOGIN_PWD" property="loginPwd" />
+		<result column="USER_LEVEL" property="userLevel" />
+	</resultMap>
+
+	<!-- 获取一个用户 -->
+	<select id="get" parameterType="string" resultMap="result" >
+		SELECT USER_CODE,LOGIN_NAME,LOGIN_PWD,USER_LEVEL FROM SYS_USER WHERE USER_CODE = #{userCode}
+	</select>
+</mapper>
